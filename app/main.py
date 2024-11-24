@@ -10,20 +10,13 @@ class Person:
 
 def create_person_list(people: list) -> list:
 
-    person_list = []
-
-    for peoples in people:
-        person_list.append(Person(peoples["name"], peoples["age"]))
+    person_list = [Person(person["name"], person["age"]) for person in people]
 
     for peoples in people:
         person = Person.people[peoples["name"]]
-        spouse_name = peoples.get("wife") or peoples.get("husband")
-        if spouse_name:
-            spouse = Person.people.get(spouse_name)
-            if spouse:
-                if "wife" in peoples:
-                    person.wife = spouse
-                else:
-                    person.husband = spouse
+        if "wife" in peoples and peoples["wife"]:
+            person.wife = Person.people.get(peoples["wife"])
+        elif "husband" in peoples and peoples["husband"]:
+            person.husband = Person.people.get(peoples["husband"])
 
     return person_list
